@@ -8,3 +8,4 @@
     <include file="db/changelog/001_init.xml"/>
 
 </databaseChangeLog>
+

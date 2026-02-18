@@ -1,6 +1,7 @@
 package ru.itq.documents.worker;
 
 import org.slf4j.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import ru.itq.documents.service.DocumentService;
 import java.util.List;
 
 @Component
+@ConditionalOnProperty(prefix = "app.workers", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class SubmitWorker {
 
     private static final Logger log = LoggerFactory.getLogger(SubmitWorker.class);
@@ -43,5 +45,3 @@ public class SubmitWorker {
         log.info("SUBMIT-worker: batchSize={}, picked={}, success={}, durationMs={}", batchSize, ids.size(), success, ms);
     }
 }
-
-

@@ -165,3 +165,4 @@ public class DocumentService {
         return registryRepository.findByDocumentId(documentId).isPresent();
     }
 }
+

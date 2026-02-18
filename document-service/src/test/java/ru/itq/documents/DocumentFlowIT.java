@@ -3,12 +3,12 @@ package ru.itq.documents;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.itq.documents.api.dto.*;
 import ru.itq.documents.domain.DocumentAction;
 import ru.itq.documents.domain.DocumentStatus;
 import ru.itq.documents.service.DocumentService;
-import ru.itq.documents.service.RegistryWriter;
+import ru.itq.documents.service.DbRegistryWriter;
 
 import java.util.List;
 
@@ -16,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.task.scheduling.enabled=true")
 class DocumentFlowIT {
 
     @Autowired
     private DocumentService service;
 
-    @MockBean
-    private RegistryWriter registryWriter;
+    @SpyBean
+    private DbRegistryWriter registryWriter;
 
     @Test
     void happyPath_singleDocument() {
@@ -98,3 +98,4 @@ class DocumentFlowIT {
         assertThat(service.registryExistsFor(d.id())).isTrue();
     }
 }
+

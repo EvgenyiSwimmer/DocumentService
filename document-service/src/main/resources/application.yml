@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/documents
-    username: documents
-    password: documents
+    username: postgres
+    password: postgres
   jpa:
     open-in-view: false
     hibernate:
@@ -21,8 +21,13 @@ app:
   batchSize: 50
   worker:
     fixedDelayMs: 2000
+  workers:
+    enabled: false
 
 logging:
   level:
     root: INFO
     ru.itq: INFO
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE
+

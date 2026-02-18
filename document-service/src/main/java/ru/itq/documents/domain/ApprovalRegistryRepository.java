@@ -9,3 +9,4 @@ public interface ApprovalRegistryRepository extends JpaRepository<ApprovalRegist
     Optional<ApprovalRegistryEntity> findByDocumentId(Long documentId);
 }
 
+

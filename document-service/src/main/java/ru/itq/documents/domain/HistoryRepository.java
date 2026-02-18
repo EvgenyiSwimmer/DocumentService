@@ -9,3 +9,4 @@ public interface HistoryRepository extends JpaRepository<HistoryEntity, Long> {
     List<HistoryEntity> findByDocumentIdOrderByCreatedAtAsc(Long documentId);
 }
 
+

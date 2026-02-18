@@ -41,3 +41,4 @@ public class GeneratorRunner implements CommandLineRunner {
         System.exit(0);
     }
 }
+
