@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/documents
+    username: documents
+    password: documents
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+app:
+  numberPrefix: "DOC"
+  batchSize: 50
+  worker:
+    fixedDelayMs: 2000
+
+logging:
+  level:
+    root: INFO
+    ru.itq: INFO

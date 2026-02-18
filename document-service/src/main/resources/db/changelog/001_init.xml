@@ -1,0 +1,121 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="001-init" author="itq">
+
+        <!-- Sequence для нумерации документов -->
+        <createSequence sequenceName="document_number_seq" startValue="1" incrementBy="1"/>
+
+        <createTable tableName="documents">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <!-- Номер генерируется автоматически при создании (DB DEFAULT) -->
+            <column name="number" type="varchar(64)" defaultValueComputed="'DOC-' || lpad(nextval('document_number_seq')::text, 9, '0')">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="author" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="title" type="varchar(1024)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="documents" indexName="idx_documents_status">
+            <column name="status"/>
+        </createIndex>
+
+        <createIndex tableName="documents" indexName="idx_documents_author">
+            <column name="author"/>
+        </createIndex>
+
+        <createIndex tableName="documents" indexName="idx_documents_created_at">
+            <column name="created_at"/>
+        </createIndex>
+
+        <createIndex tableName="documents" indexName="idx_documents_status_created_at">
+            <column name="status"/>
+            <column name="created_at"/>
+        </createIndex>
+
+        <createTable tableName="document_history">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="document_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_history_document"
+                             referencedTableName="documents"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="actor" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="action" type="varchar(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="comment" type="varchar(2048)"/>
+
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="document_history" indexName="idx_history_doc_created">
+            <column name="document_id"/>
+            <column name="created_at"/>
+        </createIndex>
+
+        <createTable tableName="approval_registry">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="document_id" type="bigint">
+                <constraints nullable="false"
+                             unique="true"
+                             foreignKeyName="fk_registry_document"
+                             referencedTableName="documents"
+                             referencedColumnNames="id"/>
+            </column>
+
+            <column name="approved_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="approved_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
